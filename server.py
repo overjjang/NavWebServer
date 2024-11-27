@@ -8,7 +8,7 @@ import time
 app = Flask(__name__)
 
 # 아두이노 직렬 포트 설정 (라즈베리파이에 연결된 아두이노)
-arduino1 = serial.Serial('/dev/tty0', 9600)  # 아두이노 1(점자블록)
+arduino1 = serial.Serial('/dev/ttyACM0', 9600)  # 아두이노 1(점자블록)
 arduino2 = serial.Serial('/dev/ttyUSB0', 9600)  # 아두이노 2(모터)
 
 def send_braille_signal(data):
