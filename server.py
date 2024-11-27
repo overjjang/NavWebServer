@@ -70,16 +70,18 @@ def dirve(data):
 # 웹 서버의 POST 요청 처리
 @app.route('/send_signal', methods=['POST'])
 def send_signal():
+    print(request)
     data = request.json
+    print(data)
     signal = data.get('signal')
 
     # 입력 신호 검증
     if not signal:
         return jsonify({"message": "Signal not found in the request!"}), 418
 
-    send_braille_signal(signal+"으로 출발합니다")
+    send_braille_signal(signal + "으로 출발합니다")
+    print(signal)
     dirve(data)
-
     return jsonify({"message": f"Signal '{signal}' sent to Arduino successfully!"}), 200
 
 
