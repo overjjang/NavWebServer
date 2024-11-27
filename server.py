@@ -8,7 +8,7 @@ import time
 app = Flask(__name__)
 
 # 아두이노 직렬 포트 설정 (라즈베리파이에 연결된 아두이노)
-arduino1 = serial.Serial('/dev/ttyUSB1', 9600)  # 아두이노 1(점자블록)
+arduino1 = serial.Serial('/dev/tty0', 9600)  # 아두이노 1(점자블록)
 arduino2 = serial.Serial('/dev/ttyUSB0', 9600)  # 아두이노 2(모터)
 
 def send_braille_signal(data):
@@ -28,14 +28,23 @@ def dirve(data):
     for i in range(len(route)):
         if route[i][0] == '1':
             arduino1.write("정지합니다".encode())
+            time.sleep(5)
         elif route[i][0] == '2':
             arduino1.write("전진합니다".encode())
+            time.sleep(5)
+
         elif route[i][0] == '3':
             arduino1.write("후진합니다".encode())
+            time.sleep(5)
+
         elif route[i][0] == '4':
             arduino1.write("왼쪽으로 이동합니다".encode())
+            time.sleep(5)
+
         elif route[i][0] == '5':
             arduino1.write("오른쪽으로 이동합니다".encode())
+            time.sleep(5)
+
         else:
             arduino1.write(route[i][0].encode())
         arduino2.write(route[i][0].encode())
@@ -49,13 +58,13 @@ def send_signal():
 
     # 입력 신호 검증
     if not signal:
-        return jsonify({"message": "Signal not found in the request!"}), 400
+        return jsonify({"message": "Signal not found in the request!"}), 418
 
     send_braille_signal(signal+"으로 출발합니다")
+    dirve(data)
 
     return jsonify({"message": f"Signal '{signal}' sent to Arduino successfully!"}), 200
 
-    dirve(data)
 
     # 아두이노로 신호 보내기
     # print(f"Sending signal '{braille}' to Arduino...")
